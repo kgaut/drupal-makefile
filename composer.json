@@ -3,5 +3,13 @@
   "description": "Generic makefile rules to manage a drupal 8+ project",
   "require": {
   }
-  "license": "GPL-3.0-or-later",
+  "keywords": ["Drupal"],
+  "license": "GPL-3.0+",
+  "homepage": "https://github.com/kgaut/makefile",
+  "minimum-stability": "dev",
+  "support": {
+    "issues": "https://github.com/kgaut/makefile/issues",
+    "source": "https://github.com/kgaut/makefile/"
+  },
+  "require": { }
 }
