@@ -32,3 +32,64 @@ Edit `Makefile` and add just after the line `include .env` :
 ```
 include vendor/kgaut/drupal-makefile/drupal.mk
 ```
+
+## Availables rules
+### db-dump
+```make db-dump```
+Create a local database gziped dump.
+
+### db-preprod-dump
+```make db-preprod-dump```
+Create a preproduction database gziped dump.
+
+### db-prod-dump
+```make db-prod-dump```
+Create a production database gziped dump.
+
+### db-prod-import
+```make db-prod-import```
+Empty local database, import the most recent database dump from production, rebuild caches, run database updates, import configuration and provide an authentification url as user 1.
+
+### db-preprod-import
+```make db-preprod-import```
+Empty local database, import the most recent database dump from preproduction, rebuild caches, run database updates, import configuration and provide an authentification url as user 1.
+
+### db-prod-get
+```make db-prod-get```
+Download the most recent database dump from production.
+
+### db-preprod-get
+```make db-preprod-get```
+Download the most recent database dump from preproduction.
+
+### db-import
+```make db-preprod-get```
+Empty local database, import the most recent dump available localy, rebuild caches, run database updates, import configuration and provide an authentification url as user 1.
+
+### db-post-import
+```make db-preprod-get```
+Rebuild caches, run database updates, import configuration and provide an authentification url as user 1.
+
+### db-empty
+```make db-empty```
+Empty local database.
+
+### dd-tail
+```make dd-tail```
+Tail the drupal-debug.txt files.
+
+### watchdog
+```make watchdog```
+Tail the watchdog entries.
+
+### ssh-prod
+```make ssh-prod```
+Open a ssh connexion to production server.
+  
+### ssh-preprod
+```make ssh-preprod```
+Open a ssh connexion to preproduction server.
+  
+### sapi
+```make sapi```
+Rebuild Search API indexes
