@@ -6,7 +6,7 @@ Generic makefile rules to manage a drupal 8+ project
 composer require kgaut/drupal-makefile
 ```
 
-Edit your .env file and copy / paste the following vars, do not forget to update values  : 
+Edit your `.env` file and copy / paste the following vars, do not forget to update values  : 
 ```
 ### --- PROD_ENV ----
 PROD_USER=my_user # SSH User 
@@ -27,7 +27,7 @@ LOCAL_TMP_PATH=./files/tmp # Local path to drupal temporary files
 LOCAL_DB_PATH=./db # Local path where to store database dumps
 ```
 
-Edit `./Makefile` and add just after the line `include .env` : 
+Edit `Makefile` and add just after the line `include .env` : 
 
 ```
 include vendor/kgaut/drupal-makefile/drupal.mk
