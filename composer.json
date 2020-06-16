@@ -1,0 +1,7 @@
+{
+  "name": " kgaut/drupal-makefile ",
+  "description": "Generic makefile rules to manage a drupal 8+ project",
+  "require": {
+  }
+  "license": "GPL-3.0-or-later",
+}
