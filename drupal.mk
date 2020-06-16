@@ -1,7 +1,7 @@
 ## db-dump	:	Dump the database in a dated gzip file within ./db folder
 .PHONY: db-dump
 db-dump:
-	docker exec $(shell docker ps --filter name='^/$(PROJECT_NAME)_php' --format "{{ .ID }}") drush -r $(DRUPAL_ROOT) $(filter-out $@,$(MAKECMDGOALS)) sql-dump --gzip --result-file="../$(PROD_DB_PATH)/`date +%Y-%m-%d_%H-%M-%S`-$(PROJECT_BASE_URL)-DEV.sql"
+	docker exec $(shell docker ps --filter name='^/$(PROJECT_NAME)_php' --format "{{ .ID }}") drush -r $(DRUPAL_ROOT) $(filter-out $@,$(MAKECMDGOALS)) sql-dump --gzip --result-file="../$(LOCAL_DB_PATH)/`date +%Y-%m-%d_%H-%M-%S`-$(PROJECT_BASE_URL)-DEV.sql"
 
 ## db-preprod-dump	: Dump the preproduction database
 .PHONY: db-preprod-dump
