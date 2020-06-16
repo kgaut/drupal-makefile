@@ -6,7 +6,7 @@ Generic makefile rules to manage a drupal 8+ project
 composer require kgaut/drupal-makefile
 ```
 
-Edit your `.env` file and copy / paste the following vars, do not forget to update values  : 
+Edit your `.env` file and copy / paste the following vars, do not forget to change values according to your setup : 
 ```
 ### --- PROD_ENV ----
 PROD_USER=my_user # SSH User 
