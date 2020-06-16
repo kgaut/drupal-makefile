@@ -1,12 +1,12 @@
 ## db-dump	:	Dump the database in a dated gzip file within ./db folder
 .PHONY: db-dump
 db-dump:
-	docker exec $(shell docker ps --filter name='^/$(PROJECT_NAME)_php' --format "{{ .ID }}") drush -r $(DRUPAL_ROOT) $(filter-out $@,$(MAKECMDGOALS)) sql-dump --gzip --result-file="../db/`date +%Y-%m-%d_%H-%M-%S`-$(PROJECT_BASE_URL)-DEV.sql"
+	docker exec $(shell docker ps --filter name='^/$(PROJECT_NAME)_php' --format "{{ .ID }}") drush -r $(DRUPAL_ROOT) $(filter-out $@,$(MAKECMDGOALS)) sql-dump --gzip --result-file="../$(PROD_DB_PATH)/`date +%Y-%m-%d_%H-%M-%S`-$(PROJECT_BASE_URL)-DEV.sql"
 
 ## db-preprod-dump	: Dump the preproduction database
 .PHONY: db-preprod-dump
 db-preprod-dump:
-	ssh -t $(PREPROD_USER)@$(PREPROD_HOST) 'cd $(PREPROD_PATH) ; $(PREPROD_DRUSH) sql-dump --structure-tables-key=light --gzip > "$(PREPROD_PATH)/db/`date +%Y-%m-%d_%H-%M-%S`-$(PREPROD_URL)-preprod-light.sql.gz"'
+	ssh -t $(PREPROD_USER)@$(PREPROD_HOST) 'cd $(PREPROD_PATH) ; $(PREPROD_DRUSH) sql-dump --structure-tables-key=light --gzip > "$(PREPROD_PATH)/$(PREPROD_DB_PATH)/`date +%Y-%m-%d_%H-%M-%S`-$(PREPROD_URL)-preprod-light.sql.gz"'
 
 ## db-prod-dump	: Dump the production database
 .PHONY: db-prod-dump
@@ -32,19 +32,17 @@ db-preprod-import:
 ## db-prod-get	:	Récupère le dump le plus récent en preprod et l'import
 .PHONY: db-prod-get
 db-prod-get:
-	$(eval DUMP=$(shell ssh $(PROD_USER)@$(PROD_HOST) 'ls -t $(PROD_PATH)/db/ | head -1'))
-	@scp $(PROD_USER)@$(PROD_HOST):$(PROD_PATH)/db/$(DUMP) $(LOCAL_DB_PATH)/
-	@echo Get dump : $(DUMP)
-	@scp $(PROD_USER)@$(PROD_HOST):$(PROD_PATH)/db/$(DUMP) $(LOCAL_DB_PATH)/
+	$(eval DUMP=$(shell ssh $(PROD_USER)@$(PROD_HOST) 'ls -t $(PROD_PATH)/$(PROD_DB_PATH)/ | head -1'))
+	@echo Get dump : $(PROD_PATH)/$(PROD_DB_PATH)/$(DUMP)
+	@scp $(PROD_USER)@$(PROD_HOST):$(PROD_PATH)/$(PROD_DB_PATH)/$(DUMP) $(LOCAL_DB_PATH)/
 	@echo Dump : Dump downloaded in $(LOCAL_DB_PATH)/$(DUMP)
 
 ## db-preprod-get	:	Récupère le dump le plus récent en preprod et l'import
 .PHONY: db-preprod-get
 db-preprod-get:
-	$(eval DUMP=$(shell ssh $(PREPROD_USER)@$(PREPROD_HOST) 'ls -t $(PREPROD_PATH)/db/ | head -1'))
-	@scp $(PREPROD_USER)@$(PREPROD_HOST):$(PREPROD_PATH)/db/$(DUMP) $(LOCAL_DB_PATH)/
-	@echo Get dump : $(DUMP)
-	@scp $(PREPROD_USER)@$(PREPROD_HOST):$(PREPROD_PATH)/db/$(DUMP) $(LOCAL_DB_PATH)/
+	$(eval DUMP=$(shell ssh $(PREPROD_USER)@$(PREPROD_HOST) 'ls -t $(PREPROD_PATH)/$(PREPROD_DB_PATH)/ | head -1'))
+	@echo Get dump : $(PREPROD_PATH)/$(PREPROD_DB_PATH)/$(DUMP)
+	@scp $(PREPROD_USER)@$(PREPROD_HOST):$(PREPROD_PATH)/$(PREPROD_DB_PATH)/$(DUMP) $(LOCAL_DB_PATH)/
 	@echo Dump : Dump downloaded in $(LOCAL_DB_PATH)/$(DUMP)
 
 ## db-import	:	Supprime la base de données
