@@ -26,7 +26,7 @@ PREPROD_DB_PATH=db # Database folder containing dumps relative to PREPROD_PATH (
 
 ### --- LOCAL_ENV ----
 LOCAL_TMP_PATH=./files/tmp # Local path to drupal temporary files
-LOCAL_DB_PATH=./db # Local path where to store database dumps
+LOCAL_DB_PATH=db # Local path where to store database dumps
 ```
 
 Edit `Makefile` and add just after the line `include .env` : 
