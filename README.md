@@ -26,3 +26,9 @@ PREPROD_URL=preprod.my-website.net # preprod url
 LOCAL_TMP_PATH=./files/tmp # Local path to drupal temporary files
 LOCAL_DB_PATH=./db # Local path where to store database dumps
 ```
+
+Edit `./Makefile` and add just after the line `include .env` : 
+
+```
+include vendor/kgaut/drupal-makefile/drupal.mk
+```
