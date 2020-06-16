@@ -1,5 +1,5 @@
 {
-  "name": " kgaut/drupal-makefile ",
+  "name": " kgaut/drupal_makefile ",
   "description": "Generic makefile rules to manage a drupal 8+ project",
   "require": {
   },
