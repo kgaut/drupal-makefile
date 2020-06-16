@@ -2,7 +2,7 @@
   "name": " kgaut/drupal-makefile ",
   "description": "Generic makefile rules to manage a drupal 8+ project",
   "require": {
-  }
+  },
   "keywords": ["Drupal"],
   "license": "GPL-3.0+",
   "homepage": "https://github.com/kgaut/makefile",
