@@ -1,6 +1,6 @@
+PREPROD_PORT := $(if $(PREPROD_PORT),$(PREPROD_PORT),22)
+PROD_PORT := $(if $(PROD_PORT),$(PROD_PORT),22)
 
-PREPROD_PORT ?= 22
-PROD_PORT ?= 22
 
 ## db-dump	:	Dump the database in a dated gzip file within ./db folder
 .PHONY: db-dump
