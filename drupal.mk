@@ -36,7 +36,7 @@ db-preprod-import:
 ## db-prod-get	:	Récupère le dump le plus récent en preprod et l'import
 .PHONY: db-prod-get
 db-prod-get:
-	$(eval DUMP=$(shell ssh $(PROD_USER)@$(PROD_HOST) -p $(PROD_PORT) 'ls -t $(PROD_PATH)/$(PROD_DB_PATH)/ | head -1'))
+	$(eval DUMP=$(shell ssh $(PROD_USER)@$(PROD_HOST) -p $(PROD_PORT) 'ls -t $(PROD_PATH)/$(PROD_DB_PATH)/ | egrep '\.sql.gz' | head -1'))
 	@echo Get dump : $(PROD_PATH)/$(PROD_DB_PATH)/$(DUMP)
 	@scp -P $(PROD_PORT) $(PROD_USER)@$(PROD_HOST):$(PROD_PATH)/$(PROD_DB_PATH)/$(DUMP) $(LOCAL_DB_PATH)/
 	@echo Dump : Dump downloaded in $(LOCAL_DB_PATH)/$(DUMP)
@@ -44,7 +44,7 @@ db-prod-get:
 ## db-preprod-get	:	Récupère le dump le plus récent en preprod et l'import
 .PHONY: db-preprod-get
 db-preprod-get:
-	$(eval DUMP=$(shell ssh $(PREPROD_USER)@$(PREPROD_HOST) -p $(PREPROD_PORT) 'ls -t $(PREPROD_PATH)/$(PREPROD_DB_PATH)/ | head -1'))
+	$(eval DUMP=$(shell ssh $(PREPROD_USER)@$(PREPROD_HOST) -p $(PREPROD_PORT) 'ls -t $(PREPROD_PATH)/$(PREPROD_DB_PATH)/ | egrep '\.sql.gz' | head -1'))
 	@echo Get dump : $(PREPROD_PATH)/$(PREPROD_DB_PATH)/$(DUMP)
 	@scp -P $(PREPROD_PORT)$(PREPROD_USER)@$(PREPROD_HOST):$(PREPROD_PATH)/$(PREPROD_DB_PATH)/$(DUMP) $(LOCAL_DB_PATH)/
 	@echo Dump : Dump downloaded in $(LOCAL_DB_PATH)/$(DUMP)
