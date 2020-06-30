@@ -10,12 +10,12 @@ db-dump:
 ## db-preprod-dump	: Dump the preproduction database
 .PHONY: db-preprod-dump
 db-preprod-dump:
-	ssh -t $(PREPROD_USER)@$(PREPROD_HOST) 'cd $(PREPROD_PATH) ; $(PREPROD_DRUSH) sql-dump --structure-tables-key=light --gzip > "$(PREPROD_PATH)/$(PREPROD_DB_PATH)/`date +%Y-%m-%d_%H-%M-%S`-$(PREPROD_URL)-preprod-light.sql.gz"'
+	ssh -t -p $(PREPROD_PORT) $(PREPROD_USER)@$(PREPROD_HOST) 'cd $(PREPROD_PATH) ; $(PREPROD_DRUSH) sql-dump --structure-tables-key=light --gzip > "$(PREPROD_PATH)/$(PREPROD_DB_PATH)/`date +%Y-%m-%d_%H-%M-%S`-$(PREPROD_URL)-preprod-light.sql.gz"'
 
 ## db-prod-dump	: Dump the production database
 .PHONY: db-prod-dump
 db-prod-dump:
-	ssh -t $(PROD_USER)@$(PROD_HOST) 'cd $(PROD_PATH) ; $(PROD_DRUSH) sql-dump --structure-tables-key=light --gzip > "$(PROD_PATH)/db/`date +%Y-%m-%d_%H-%M-%S`-$(PROD_URL)-prod-light.sql.gz"'
+	ssh -t -p $(PROD_PORT) $(PROD_USER)@$(PROD_HOST) 'cd $(PROD_PATH) ; $(PROD_DRUSH) sql-dump --structure-tables-key=light --gzip > "$(PROD_PATH)/db/`date +%Y-%m-%d_%H-%M-%S`-$(PROD_URL)-prod-light.sql.gz"'
 
 ## db-preprod-import	:	Récupère le dump le plus récent en prod et l'import en local
 ##		vide le cache
@@ -38,7 +38,7 @@ db-preprod-import:
 db-prod-get:
 	$(eval DUMP=$(shell ssh $(PROD_USER)@$(PROD_HOST) 'ls -t $(PROD_PATH)/$(PROD_DB_PATH)/ | head -1'))
 	@echo Get dump : $(PROD_PATH)/$(PROD_DB_PATH)/$(DUMP)
-	@scp $(PROD_USER)@$(PROD_HOST):$(PROD_PATH)/$(PROD_DB_PATH)/$(DUMP) $(LOCAL_DB_PATH)/
+	@scp -P $(PROD_PORT) $(PROD_USER)@$(PROD_HOST):$(PROD_PATH)/$(PROD_DB_PATH)/$(DUMP) $(LOCAL_DB_PATH)/
 	@echo Dump : Dump downloaded in $(LOCAL_DB_PATH)/$(DUMP)
 
 ## db-preprod-get	:	Récupère le dump le plus récent en preprod et l'import
@@ -46,7 +46,7 @@ db-prod-get:
 db-preprod-get:
 	$(eval DUMP=$(shell ssh $(PREPROD_USER)@$(PREPROD_HOST) 'ls -t $(PREPROD_PATH)/$(PREPROD_DB_PATH)/ | head -1'))
 	@echo Get dump : $(PREPROD_PATH)/$(PREPROD_DB_PATH)/$(DUMP)
-	@scp $(PREPROD_USER)@$(PREPROD_HOST):$(PREPROD_PATH)/$(PREPROD_DB_PATH)/$(DUMP) $(LOCAL_DB_PATH)/
+	@scp -p $(PREPROD_PORT)$(PREPROD_USER)@$(PREPROD_HOST):$(PREPROD_PATH)/$(PREPROD_DB_PATH)/$(DUMP) $(LOCAL_DB_PATH)/
 	@echo Dump : Dump downloaded in $(LOCAL_DB_PATH)/$(DUMP)
 
 ## db-import	:	Supprime la base de données
@@ -97,12 +97,12 @@ watchdog:
 ## ssh-preprod	: ssh to preprod
 .PHONY: ssh-preprod
 ssh-preprod:
-	ssh "$(PREPROD_USER)@$(PREPROD_HOST)"
+	ssh "$(PREPROD_USER)@$(PREPROD_HOST) -p $(PREPROD_HOST)"
 
 ## ssh-prod	: ssh to prod
 .PHONY: ssh-prod
 ssh-prod:
-	ssh "$(PROD_USER)@$(PROD_HOST)"
+	ssh "$(PROD_USER)@$(PROD_HOST) -p $(PROD_HOST)"
 
 ## sapi	:	Recharge l'index de solr
 .PHONY: sapi
