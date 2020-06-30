@@ -1,3 +1,7 @@
+
+PREPROD_PORT ?= 22
+PROD_PORT ?= 22
+
 ## db-dump	:	Dump the database in a dated gzip file within ./db folder
 .PHONY: db-dump
 db-dump:
