@@ -46,7 +46,7 @@ db-prod-get:
 db-preprod-get:
 	$(eval DUMP=$(shell ssh $(PREPROD_USER)@$(PREPROD_HOST) -p $(PREPROD_PORT) 'ls -t $(PREPROD_PATH)/$(PREPROD_DB_PATH)/ | egrep '\.sql.gz' | head -1'))
 	@echo Get dump : $(PREPROD_PATH)/$(PREPROD_DB_PATH)/$(DUMP)
-	@scp -P $(PREPROD_PORT)$(PREPROD_USER)@$(PREPROD_HOST):$(PREPROD_PATH)/$(PREPROD_DB_PATH)/$(DUMP) $(LOCAL_DB_PATH)/
+	@scp -P $(PREPROD_PORT) $(PREPROD_USER)@$(PREPROD_HOST):$(PREPROD_PATH)/$(PREPROD_DB_PATH)/$(DUMP) $(LOCAL_DB_PATH)/
 	@echo Dump : Dump downloaded in $(LOCAL_DB_PATH)/$(DUMP)
 
 ## db-import	:	Supprime la base de données
