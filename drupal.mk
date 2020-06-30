@@ -36,7 +36,7 @@ db-preprod-import:
 ## db-prod-get	:	Récupère le dump le plus récent en preprod et l'import
 .PHONY: db-prod-get
 db-prod-get:
-	$(eval DUMP=$(shell ssh $(PROD_USER)@$(PROD_HOST) 'ls -t $(PROD_PATH)/$(PROD_DB_PATH)/ | head -1'))
+	$(eval DUMP=$(shell ssh $(PROD_USER)@$(PROD_HOST) -p $(PROD_PORT) 'ls -t $(PROD_PATH)/$(PROD_DB_PATH)/ | head -1'))
 	@echo Get dump : $(PROD_PATH)/$(PROD_DB_PATH)/$(DUMP)
 	@scp -P $(PROD_PORT) $(PROD_USER)@$(PROD_HOST):$(PROD_PATH)/$(PROD_DB_PATH)/$(DUMP) $(LOCAL_DB_PATH)/
 	@echo Dump : Dump downloaded in $(LOCAL_DB_PATH)/$(DUMP)
@@ -44,9 +44,9 @@ db-prod-get:
 ## db-preprod-get	:	Récupère le dump le plus récent en preprod et l'import
 .PHONY: db-preprod-get
 db-preprod-get:
-	$(eval DUMP=$(shell ssh $(PREPROD_USER)@$(PREPROD_HOST) 'ls -t $(PREPROD_PATH)/$(PREPROD_DB_PATH)/ | head -1'))
+	$(eval DUMP=$(shell ssh $(PREPROD_USER)@$(PREPROD_HOST) -p $(PREPROD_PORT) 'ls -t $(PREPROD_PATH)/$(PREPROD_DB_PATH)/ | head -1'))
 	@echo Get dump : $(PREPROD_PATH)/$(PREPROD_DB_PATH)/$(DUMP)
-	@scp -p $(PREPROD_PORT)$(PREPROD_USER)@$(PREPROD_HOST):$(PREPROD_PATH)/$(PREPROD_DB_PATH)/$(DUMP) $(LOCAL_DB_PATH)/
+	@scp -P $(PREPROD_PORT)$(PREPROD_USER)@$(PREPROD_HOST):$(PREPROD_PATH)/$(PREPROD_DB_PATH)/$(DUMP) $(LOCAL_DB_PATH)/
 	@echo Dump : Dump downloaded in $(LOCAL_DB_PATH)/$(DUMP)
 
 ## db-import	:	Supprime la base de données
@@ -97,12 +97,12 @@ watchdog:
 ## ssh-preprod	: ssh to preprod
 .PHONY: ssh-preprod
 ssh-preprod:
-	ssh "$(PREPROD_USER)@$(PREPROD_HOST) -p $(PREPROD_HOST)"
+	ssh $(PREPROD_USER)@$(PREPROD_HOST) -p $(PREPROD_PORT)
 
 ## ssh-prod	: ssh to prod
 .PHONY: ssh-prod
 ssh-prod:
-	ssh "$(PROD_USER)@$(PROD_HOST) -p $(PROD_HOST)"
+	ssh $(PROD_USER)@$(PROD_HOST) -p $(PROD_PORT)
 
 ## sapi	:	Recharge l'index de solr
 .PHONY: sapi
