@@ -92,7 +92,7 @@ dd-tail:
 ## watchdog	: tail watchdog messages
 .PHONY: watchdog
 watchdog:
-	while sleep 2; do $(MAKE) drush "watchdog-show"; done
+	$(MAKE) drush "watchdog-show --tail --count=50"
 
 ## ssh-preprod	: ssh to preprod
 .PHONY: ssh-preprod
