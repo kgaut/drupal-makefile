@@ -115,6 +115,15 @@ Tail the drupal-debug.txt files.
 ```make watchdog```
 Tail the watchdog entries.
 
+Note : for this command to works, you'll need to patch drush/drush by adding the following lines to the patches section of your composer file : 
+
+```
+"drush/drush" : {
+    "Adding --tail option to drush ws. #3523" : "https://github.com/kgaut/drush/commit/8b79fb395d344ae6f07300e87408db49d158b80b.diff"
+},
+```
+For more informations : https://kgaut.net/blog/2016/drupal-8-composer-appliquer-un-patch-dans-le-fichier-composerjson.html
+
 ### ssh-prod
 ```make ssh-prod```
 Open a ssh connexion to production server.
