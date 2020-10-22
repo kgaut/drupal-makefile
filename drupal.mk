@@ -10,12 +10,19 @@ db-dump:
 ## db-preprod-dump	: Dump the preproduction database
 .PHONY: db-preprod-dump
 db-preprod-dump:
+	@echo "Database dump started"
 	ssh -t -p $(PREPROD_PORT) $(PREPROD_USER)@$(PREPROD_HOST) 'cd $(PREPROD_PATH) ; $(PREPROD_DRUSH) sql-dump --structure-tables-key=light --gzip > "$(PREPROD_PATH)/$(PREPROD_DB_PATH)/`date +%Y-%m-%d_%H-%M-%S`-$(PREPROD_URL)-preprod-light.sql.gz"'
+	@echo "Database dump over" :
+	@ssh -t -p $(PREPROD_PORT) $(PREPROD_USER)@$(PREPROD_HOST) 'ls -alh $(PREPROD_PATH)/$(PREPROD_DB_PATH)'
+
 
 ## db-prod-dump	: Dump the production database
 .PHONY: db-prod-dump
 db-prod-dump:
-	ssh -t -p $(PROD_PORT) $(PROD_USER)@$(PROD_HOST) 'cd $(PROD_PATH) ; $(PROD_DRUSH) sql-dump --structure-tables-key=light --gzip > "$(PROD_PATH)/db/`date +%Y-%m-%d_%H-%M-%S`-$(PROD_URL)-prod-light.sql.gz"'
+	@echo Database dump started
+	ssh -t -p $(PROD_PORT) $(PROD_USER)@$(PROD_HOST) 'cd $(PROD_PATH) ; $(PROD_DRUSH) sql-dump --structure-tables-key=light --gzip > "$(PROD_PATH)/$(PROD_DB_PATH)/`date +%Y-%m-%d_%H-%M-%S`-$(PROD_URL)-prod-light.sql.gz"'
+	@echo Database dump over :
+	@ssh -t -p $(PROD_PORT) $(PROD_USER)@$(PROD_HOST) 'ls -alh $(PROD_PATH)/$(PROD_DB_PATH)'
 
 ## db-preprod-import	:	Récupère le dump le plus récent en prod et l'import en local
 ##		vide le cache
