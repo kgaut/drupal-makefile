@@ -43,7 +43,7 @@ LOCAL_TMP_PATH=./files/tmp
 LOCAL_DB_PATH=db
 ```
 
-Edit `Makefile` and add just after the line `include .env` : 
+Edit `Makefile` and add just after the line `include .env` (or after the line `include docker.mk`, depending on your docker4drupal version) : 
 
 ```
 include vendor/kgaut/drupal-makefile/drupal.mk
