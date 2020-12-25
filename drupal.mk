@@ -67,22 +67,8 @@ db-import: db-empty
 	@echo Import dump : $(DUMP)
 	@docker-compose exec -T $(DB_HOST) zcat /var/db/$(DUMP) | docker-compose exec -T $(DB_HOST) mysql -u"$(DB_USER)" -p"$(DB_PASSWORD)" $(DB_NAME)
 	@echo Dump $(DUMP) imported
-	$(MAKE) db-post-import
+	$(MAKE) drush deploy
 	$(MAKE) drush uli
-
-## db-post-import	:	Supprime la base de données
-##		Recrée la base de données
-##		importe le dump le plus récent du dossier db/,
-##		vide le cache
-##		réimporte la configuration
-
-## post-db-import	:	Récupère le dump le plus récent en prod
-.PHONY: db-post-import
-db-post-import:
-	$(MAKE) drush cr
-	$(MAKE) drush "updb --no-post-updates"
-	$(MAKE) drush cim
-	$(MAKE) drush updb
 
 ## db-empty	: drop and recreate database
 .PHONY: db-empty
