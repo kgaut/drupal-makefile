@@ -74,7 +74,7 @@ db-preprod-get:
 db-import: db-empty
 	$(eval DUMP := $(if $(filter-out $@,$(MAKECMDGOALS)),$(filter-out $@,$(MAKECMDGOALS)),$(shell ls -t $(LOCAL_DB_PATH)/ | head -1)))
 	@echo Import dump : $(DUMP)
-	@docker-compose exec -T $(DB_HOST) zcat /var/db/$(DUMP) | docker-compose exec -T $(DB_HOST) mysql -u"$(DB_USER)" -p"$(DB_PASSWORD)" $(DB_NAME)
+	@docker compose exec -T $(DB_HOST) zcat /var/db/$(DUMP) | docker compose exec -T $(DB_HOST) mysql -u"$(DB_USER)" -p"$(DB_PASSWORD)" $(DB_NAME)
 	@echo Dump $(DUMP) imported
 	$(MAKE) drush deploy
 	$(MAKE) drush uli
@@ -83,9 +83,9 @@ db-import: db-empty
 ##	drop and recreate database
 .PHONY: db-empty
 db-empty:
-	@docker-compose exec -T $(DB_HOST) mysql -u"$(DB_USER)" -p"$(DB_PASSWORD)" -e "DROP DATABASE IF EXISTS $(DB_NAME)"
+	@docker compose exec -T $(DB_HOST) mysql -u"$(DB_USER)" -p"$(DB_PASSWORD)" -e "DROP DATABASE IF EXISTS $(DB_NAME)"
 	@echo Database $(DB_NAME) dropped
-	@docker-compose exec -T $(DB_HOST) mysql -u"$(DB_USER)" -p"$(DB_PASSWORD)" -e "CREATE DATABASE $(DB_NAME)"
+	@docker compose exec -T $(DB_HOST) mysql -u"$(DB_USER)" -p"$(DB_PASSWORD)" -e "CREATE DATABASE $(DB_NAME)"
 
 ## dd-tail :
 ##	show the tail of drupal-debug.txt file
