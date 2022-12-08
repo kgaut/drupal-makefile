@@ -86,7 +86,7 @@ db-import: db-empty
 ##	importe le dump le plus récent du dossier db/, ou le dump passé en paramètre
 ##	Vide le cache
 .PHONY: db-import-only
-db-import: db-empty
+db-import-only: db-empty
 	$(eval DUMP := $(if $(filter-out $@,$(MAKECMDGOALS)),$(filter-out $@,$(MAKECMDGOALS)),$(shell ls -t $(LOCAL_DB_PATH)/ | head -1)))
 	@echo Import dump : $(DUMP)
 	@docker compose exec -T $(DB_HOST) zcat /var/db/$(DUMP) | docker compose exec -T $(DB_HOST) mysql -u"$(DB_USER)" -p"$(DB_PASSWORD)" $(DB_NAME)
