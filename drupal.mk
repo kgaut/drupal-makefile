@@ -79,6 +79,22 @@ db-import: db-empty
 	$(MAKE) drush deploy
 	$(MAKE) drush uli
 
+
+## db-import-only :	
+##	Supprime la base de données
+##	Recrée la base de données
+##	importe le dump le plus récent du dossier db/, ou le dump passé en paramètre
+##	Vide le cache
+.PHONY: db-import-only
+db-import: db-empty
+	$(eval DUMP := $(if $(filter-out $@,$(MAKECMDGOALS)),$(filter-out $@,$(MAKECMDGOALS)),$(shell ls -t $(LOCAL_DB_PATH)/ | head -1)))
+	@echo Import dump : $(DUMP)
+	@docker compose exec -T $(DB_HOST) zcat /var/db/$(DUMP) | docker compose exec -T $(DB_HOST) mysql -u"$(DB_USER)" -p"$(DB_PASSWORD)" $(DB_NAME)
+	@echo Dump $(DUMP) imported
+	$(MAKE) drush cr
+	$(MAKE) drush uli
+
+
 ## db-empty :
 ##	drop and recreate database
 .PHONY: db-empty
