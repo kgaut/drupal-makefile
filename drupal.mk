@@ -64,6 +64,25 @@ db-preprod-get:
 	@scp -P $(PREPROD_PORT) $(PREPROD_USER)@$(PREPROD_HOST):$(PREPROD_PATH)/$(PREPROD_DB_PATH)/$(DUMP) $(LOCAL_DB_PATH)/
 	@echo Dump : Dump downloaded in $(LOCAL_DB_PATH)/$(DUMP)
 
+## db-prod-send :
+##	Envoi le dump le plus récent en prod
+.PHONY: db-prod-send
+db-prod-send:
+	$(eval DUMP=$(shell ls -t ./$(LOCAL_DB_PATH) | egrep '\.sql.gz' | head -1))
+	@echo Send dump : $(DUMP)
+	@scp -P $(PROD_PORT) $(LOCAL_DB_PATH)/$(DUMP) $(PROD_USER)@$(PROD_HOST):$(PROD_PATH)/$(PROD_DB_PATH)/
+	@echo Dump : Dump sended to $(PROD_PATH)/$(PROD_DB_PATH)/$(DUMP)
+
+
+## db-preprod-send :
+##	Envoi le dump le plus récent en preprod
+.PHONY: db-preprod-send
+db-preprod-get:
+	$(eval DUMP=$(shell ls -t ./$(LOCAL_DB_PATH) | egrep '\.sql.gz' | head -1))
+	@echo Send dump : $(DUMP)
+	@scp -P $(PREPROD_PORT) $(LOCAL_DB_PATH)/$(DUMP) $(PREPROD_USER)@$(PREPROD_HOST):$(PREPROD_PATH)/$(PREPROD_DB_PATH)/
+	@echo Dump : Dump sended to $(PREPROD_PATH)/$(PREPROD_DB_PATH)/$(DUMP)
+
 ## db-import :	
 ##	Supprime la base de données
 ##	Recrée la base de données
