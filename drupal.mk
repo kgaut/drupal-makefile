@@ -77,7 +77,7 @@ db-prod-send:
 ## db-preprod-send :
 ##	Envoi le dump le plus récent en preprod
 .PHONY: db-preprod-send
-db-preprod-get:
+db-preprod-send:
 	$(eval DUMP=$(shell ls -t ./$(LOCAL_DB_PATH) | egrep '\.sql.gz' | head -1))
 	@echo Send dump : $(DUMP)
 	@scp -P $(PREPROD_PORT) $(LOCAL_DB_PATH)/$(DUMP) $(PREPROD_USER)@$(PREPROD_HOST):$(PREPROD_PATH)/$(PREPROD_DB_PATH)/
