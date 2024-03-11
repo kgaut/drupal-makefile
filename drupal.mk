@@ -95,7 +95,28 @@ db-import: db-empty
 	@echo Import dump : $(DUMP)
 	@docker compose exec -T $(DB_HOST) zcat /var/db/$(DUMP) | docker compose exec -T $(DB_HOST) mysql -u"$(DB_USER)" -p"$(DB_PASSWORD)" $(DB_NAME)
 	@echo Dump $(DUMP) imported
+	$(MAKE) db-deploy
+	$(MAKE) drush uli
+
+.PHONY: db-deploy
+db-deploy:
+
+	@if [ -d "./scripts/pre-deploy" ]; then \
+		for file in ./scripts/pre-deploy/* ; do \
+			echo "Execution script " $${file}; \
+			$(MAKE) drush php:script $${file} || exit 1; \
+		done \
+	fi
+
 	$(MAKE) drush deploy
+
+	@if [ -d "./scripts/post-deploy" ]; then \
+		for file in ./scripts/post-deploy/* ; do \
+			echo "Execution script " $${file}; \
+			$(MAKE) drush php:script $${file} || exit 1; \
+		done \
+	fi
+	
 	$(MAKE) drush uli
 
 
