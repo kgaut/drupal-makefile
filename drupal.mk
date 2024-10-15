@@ -174,3 +174,14 @@ sapi:
 	$(MAKE) drush sapi-r
 	$(MAKE) drush sapi-i
 
+.PHONY: phpcs
+phpcs:
+	docker exec $(shell docker ps --filter name='^/$(PROJECT_NAME)_php' --format "{{ .ID }}") phpcs --report-full --report-summary --report-source $(filter-out $@,$(MAKECMDGOALS))
+
+.PHONY: phpstan
+phpstan:
+	docker exec $(shell docker ps --filter name='^/$(PROJECT_NAME)_php' --format "{{ .ID }}") phpstan $(filter-out $@,$(MAKECMDGOALS))
+
+.PHONY: phpunit
+phpunit:
+	docker exec $(shell docker ps --filter name='^/$(PROJECT_NAME)_php' --format "{{ .ID }}") phpunit --testdox
